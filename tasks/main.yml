@@ -1,0 +1,27 @@
+---
+
+- name: install java ppa
+  apt_repository:
+    repo: ppa:webupd8team/java
+
+- name: Accept Java 8 License
+  debconf:
+    name: 'oracle-java8-installer'
+    question: 'shared/accepted-oracle-license-v1-1'
+    value: 'true'
+    vtype: 'select'
+
+- name: install required packages
+  apt:
+    name: "{{ packages }}"
+    state: present
+    dpkg_options: 'force-confnew,force-confdef'
+    autoclean: yes
+    autoremove: yes
+    update_cache: yes
+    cache_valid_time: 3600
+  vars:
+    packages:
+    - oracle-java8-installer
+
+...
